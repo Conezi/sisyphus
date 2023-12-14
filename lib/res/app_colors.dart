@@ -11,7 +11,7 @@ class AppColors {
   static const Color darkCanvasColor = Color(0xff20252B);
   static const Color darkDividerColor = Color(0xff262932);
 
-  static const Color secondaryColor = Color(0xffDD568D);
+  static const Color secondaryColor = Color(0xffCFD3D8);
   static const Color green = Color(0xff00C076);
   static const Color orange = Color(0xffFF6838);
 

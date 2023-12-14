@@ -1,7 +1,7 @@
-import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/view_model.dart';
+import '../../res/app_colors.dart';
+import 'custom_tab.dart';
 
 class TradingBoard extends StatelessWidget {
   const TradingBoard({super.key});
@@ -9,7 +9,7 @@ class TradingBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 591,
+      height: 390,
       width: double.infinity,
       margin: const EdgeInsets.only(top: 15),
       decoration: BoxDecoration(
@@ -19,59 +19,29 @@ class TradingBoard extends StatelessWidget {
             color: Theme.of(context).dividerColor,
             width: 1,
           ))),
-      child: DefaultTabController(
-          length: 3,
+      child: const DefaultTabController(
+          length: 4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 25.0, horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dividerColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  ),
-                  child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(8.0)),
-                      child: TabBar(
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorPadding: const EdgeInsets.all(5.0),
-                        indicator: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Theme.of(context)
-                                      .shadowColor
-                                      .withOpacity(.2),
-                                  blurRadius: 2,
-                                  spreadRadius: 0.2,
-                                  offset: const Offset(0.0, 1.0))
-                            ]),
-                        unselectedLabelColor:
-                            Theme.of(context).textTheme.bodySmall!.color,
-                        unselectedLabelStyle: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),
-                        labelColor:
-                            Theme.of(context).textTheme.bodyMedium!.color,
-                        labelStyle: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),
-                        isScrollable: true,
-                        tabs: const [
-                          Tab(text: 'Charts'),
-                          Tab(text: 'Orderbook'),
-                          Tab(text: 'Recent trades')
-                        ],
-                      ))),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: CustomTab(tabs: [
+                  Tab(text: 'Open Orders'),
+                  Tab(text: 'Positions'),
+                  Tab(text: 'Order History'),
+                  Tab(text: 'Trade History')
+                ], isScrollable: true),
+              ),
               SizedBox(
-                height: 400,
+                height: 290,
                 child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   children: [
-                    ChartView(),
-                    Text('2'),
-                    Text('3'),
+                    EmptyWidget(title: 'No Open Orders'),
+                    EmptyWidget(),
+                    EmptyWidget(),
+                    EmptyWidget(),
                   ],
                 ),
               )
@@ -81,29 +51,90 @@ class TradingBoard extends StatelessWidget {
   }
 }
 
-class ChartView extends StatelessWidget {
-  const ChartView({super.key});
+class EmptyWidget extends StatelessWidget {
+  final String title;
+  const EmptyWidget({this.title = "Nothing to show here!", super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: ViewModel.instance,
-      builder: (BuildContext context, Widget? child) {
-        final candles = ViewModel.instance.candles;
-        return Column(
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(title,
+              style:
+                  const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+          const SizedBox(height: 8),
+          Text(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id pulvinar nullam sit imperdiet pulvinar.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+                height: 2,
+                color: Theme.of(context).textTheme.bodySmall!.color),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonsCard extends StatelessWidget {
+  const ButtonsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 64,
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            border: Border.symmetric(
+                horizontal: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 1,
+            ))),
+        child: Row(
           children: [
             Expanded(
-              child: Candlesticks(
-                key: Key(
-                    '${ViewModel.instance.currentTicker?.symbol}${ViewModel.instance.currentInterval}'),
-                candles: candles,
-                onLoadMoreCandles: ViewModel.instance.fetchMoreCandles,
-                actions: [],
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.green,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                  textStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
+                  ),
+                ),
+                child: const Text(
+                  'Buy',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
+            const SizedBox(width: 15.0),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.orange,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                  textStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
+                  ),
+                ),
+                child: const Text(
+                  'Sell',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+              ),
+            )
           ],
-        );
-      },
-    );
+        ));
   }
 }

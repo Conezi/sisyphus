@@ -19,7 +19,7 @@ class ViewModel extends BaseViewModel {
 
   WebSocketChannel? _channel;
 
-  String _currentInterval = "1m";
+  String _currentInterval = "1h";
   final _intervals = [
     '1m',
     '3m',

@@ -4,6 +4,7 @@ import '../core/view_model.dart';
 import '../res/app_images.dart';
 import 'widget/image_view.dart';
 import 'widget/summary_card.dart';
+import 'widget/market_board.dart';
 import 'widget/trading_board.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -49,7 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: ListView(
-        children: const [SummaryCard(), TradingBoard()],
+        children: const [
+          SummaryCard(),
+          MarketBoard(),
+          TradingBoard(),
+          ButtonsCard()
+        ],
       ),
     );
   }

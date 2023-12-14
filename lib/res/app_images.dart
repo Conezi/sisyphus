@@ -13,4 +13,5 @@ class AppImages {
   static const icArrowDown = '${_svgBaseUrl}ic_arrow_down.svg';
   static const icArrowUp = '${_svgBaseUrl}ic_arrow_up.svg';
   static const icClock = '${_svgBaseUrl}ic_clock.svg';
+  static const icCandleChart = '${_svgBaseUrl}ic_candle_chart.svg';
 }
