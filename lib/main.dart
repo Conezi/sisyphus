@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'configs/theme_config.dart';
 import 'res/app_routes.dart';
 import 'res/app_strings.dart';
 import 'res/app_theme.dart';
@@ -18,14 +19,19 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return MaterialApp(
-      title: AppStrings.appName,
-      themeMode: ThemeMode.light,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      routes: AppRoutes.routes,
-      initialRoute: AppRoutes.splashScreen,
-      onGenerateRoute: AppRoutes.generateRoute,
+    return ListenableBuilder(
+      listenable: ThemeConfig.instance,
+      builder: (BuildContext context, Widget? child) {
+        return MaterialApp(
+          title: AppStrings.appName,
+          themeMode: ThemeConfig.instance.themeMode,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          routes: AppRoutes.routes,
+          initialRoute: AppRoutes.splashScreen,
+          onGenerateRoute: AppRoutes.generateRoute,
+        );
+      },
     );
   }
 }
