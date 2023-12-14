@@ -30,8 +30,8 @@ class AppTheme {
           iconTheme: ThemeData.light().iconTheme,
           color: AppColors.lightPrimary,
           systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
           )));
 
   static ThemeData darkTheme = ThemeData(
@@ -42,7 +42,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.darkBackground,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Satoshi',
-      colorScheme: const ColorScheme.light(
+      colorScheme: const ColorScheme.dark(
           secondary: AppColors.secondaryColor,
           primary: AppColors.secondaryColor,
           background: AppColors.darkBackground,
@@ -56,7 +56,7 @@ class AppTheme {
           iconTheme: ThemeData.dark().iconTheme,
           color: AppColors.darkPrimary,
           systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.light,
           )));
 }
