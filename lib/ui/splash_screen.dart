@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import '../configs/size_config.dart';
 import '../res/app_images.dart';
+import '../res/app_routes.dart';
 import 'widget/image_view.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void handleTimeout() => changeScreen();
 
   Future<void> changeScreen() async {
+    Navigator.of(context).pushReplacementNamed(AppRoutes.homeScreen);
     //Show status bar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
