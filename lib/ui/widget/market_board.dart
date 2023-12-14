@@ -1,11 +1,12 @@
 import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
-import 'package:sisyphus/res/app_images.dart';
-import 'package:sisyphus/ui/widget/image_view.dart';
 
 import '../../core/view_model.dart';
+import '../../res/app_images.dart';
 import 'custom_tab.dart';
 import 'dropdown_view.dart';
+import 'image_view.dart';
+import 'order_books.dart';
 import 'trading_board.dart';
 
 class MarketBoard extends StatelessWidget {
@@ -41,7 +42,7 @@ class MarketBoard extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     ChartView(),
-                    Text('2'),
+                    OrderBooks(),
                     EmptyWidget(),
                   ],
                 ),

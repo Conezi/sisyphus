@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:candlesticks/candlesticks.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../configs/base_viewmodel.dart';
 import 'data_models/candle_ticker.dart';
+import 'data_models/order_book.dart';
 import 'data_models/ticker.dart';
 import 'repository.dart';
 
@@ -38,19 +38,26 @@ class ViewModel extends BaseViewModel {
     '1M'
   ];
 
+  int _currentLimit = 5;
+  final _limits = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
   Ticker? _currentTicker;
   List<Ticker> _tickers = [];
 
   List<Candle> _candles = [];
 
-  void setInterval(String interval) {
-    _currentInterval = interval;
-    updateData(_currentTicker!, _currentInterval);
-  }
+  OrderBook? _orderBook;
+  ExchangeSymbol? _symbols;
+
+  void setInterval(String interval) =>
+      updateData(_currentTicker!, interval: interval);
+
+  void setLimit(int limit) => updateData(_currentTicker!, limit: limit);
 
   void setTicker(Ticker ticker) {
-    _currentTicker = ticker;
-    updateData(_currentTicker!, _currentInterval);
+    _currentTicker = null;
+    _symbols = null;
+    updateData(ticker, interval: _currentInterval, limit: _currentLimit);
   }
 
   Future<void> fetchSymbols() async {
@@ -58,7 +65,8 @@ class ViewModel extends BaseViewModel {
       final tickers = await _repository.fetchSymbols();
       _tickers = tickers;
       if (tickers.isNotEmpty) {
-        updateData(_tickers.first, _currentInterval);
+        updateData(_tickers.first,
+            interval: _currentInterval, limit: _currentLimit);
       }
     } catch (e) {
       setViewState(ViewState.failed);
@@ -66,24 +74,39 @@ class ViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> updateData(Ticker ticker, String interval) async {
+  Future<void> updateData(Ticker ticker, {String? interval, int? limit}) async {
     // close current channel if exists
     _closeSocketConnection();
 
-    _candles = [];
-    _currentInterval = interval;
+    if (interval != null) {
+      _candles = [];
+      _currentInterval = interval;
+    }
+    if (limit != null) {
+      _orderBook = null;
+      _currentLimit = limit;
+    }
     setViewState(ViewState.processing);
+
     try {
       final rtnTicker = await _repository.fetchSymbol(ticker.symbol);
+      _currentTicker = rtnTicker;
+
+      final rtnSymbol = await _repository.fetchExchangeInfo(ticker.symbol);
+      _symbols = rtnSymbol;
       // load candles info
       final rtnCandle = await _repository.fetchCandles(
-          symbol: ticker.symbol, interval: interval);
+          symbol: ticker.symbol, interval: _currentInterval);
+      _candles = rtnCandle;
+
+      final rtnOrderBook = await _repository.fetchOrderBook(
+          symbol: ticker.symbol, limit: _currentLimit);
+      _orderBook = rtnOrderBook;
+
       // connect to binance stream
       _connectAndListen(ticker);
       // update candles
-      _candles = rtnCandle;
-      _currentInterval = interval;
-      _currentTicker = rtnTicker;
+
       setViewState(ViewState.success);
     } catch (e) {
       setViewState(ViewState.failed);
@@ -109,34 +132,38 @@ class ViewModel extends BaseViewModel {
 
   void _connectAndListen(Ticker ticker) {
     _channel = _repository.establishConnection(
-        ticker.symbol.toLowerCase(), _currentInterval);
+        ticker.symbol.toLowerCase(), _currentInterval, _currentLimit);
     if (_channel != null) {
       _channel!.stream.listen(
         (message) {
-          log(name: 'Incoming', message);
+          //log(name: 'Incoming', message);
           final map = jsonDecode(message) as Map<String, dynamic>;
           if (map['e'] == 'depthUpdate') {
-            //Update depth
+            if (_orderBook == null) return;
+            //Update order book
+            final orderBook = OrderBook.fromMap(map);
+            _orderBook = orderBook;
           }
           if (map['e'] == 'kline') {
-            if (candles.isEmpty) return;
+            if (_candles.isEmpty) return;
             //Update candle
             final candleTicker = CandleTickerModel.fromJson(map);
 
             // cehck if incoming candle is an update on current last candle, or a new one
-            if (candles[0].date == candleTicker.candle.date &&
-                candles[0].open == candleTicker.candle.open) {
+            if (_candles[0].date == candleTicker.candle.date &&
+                _candles[0].open == candleTicker.candle.open) {
               // update last candle
-              candles[0] = candleTicker.candle;
+              _candles[0] = candleTicker.candle;
             }
             // check if incoming new candle is next candle so the difrence
             // between times must be the same as last existing 2 candles
-            else if (candleTicker.candle.date.difference(candles[0].date) ==
-                candles[0].date.difference(candles[1].date)) {
+            else if (candleTicker.candle.date.difference(_candles[0].date) ==
+                _candles[0].date.difference(_candles[1].date)) {
               // add new candle to list
-              candles.insert(0, candleTicker.candle);
+              _candles.insert(0, candleTicker.candle);
             }
           }
+          setViewState(ViewState.idle);
         },
         onDone: () => _closeSocketConnection(),
         onError: (error) {
@@ -160,8 +187,18 @@ class ViewModel extends BaseViewModel {
   List<String> get intervals => _intervals;
   String get currentInterval => _currentInterval;
 
+  List<int> get limits => _limits;
+  int get currentLimit => _currentLimit;
+
   Ticker? get currentTicker => _currentTicker;
   List<Ticker> get tickers => _tickers;
 
   List<Candle> get candles => _candles;
+
+  OrderBook? get orderBook => _orderBook;
+  ExchangeSymbol? get symbols => _symbols;
+
+  String get pairSymbol => symbols != null
+      ? '${symbols!.baseAsset}/${symbols!.quoteAsset}'
+      : currentTicker!.symbol;
 }

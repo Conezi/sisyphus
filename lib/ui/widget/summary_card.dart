@@ -44,7 +44,7 @@ class SummaryCard extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(ticker.symbol,
+                            Text(ViewModel.instance.pairSymbol,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 18.0)),

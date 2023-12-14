@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../res/app_endpoints.dart';
+import 'data_models/order_book.dart';
 import 'data_models/ticker.dart';
 
 class Repository {
@@ -33,8 +34,22 @@ class Repository {
     return Ticker.fromJson(res.body);
   }
 
-  WebSocketChannel establishConnection(String symbol, String interval,
-      [int limit = 100]) {
+  Future<OrderBook> fetchOrderBook(
+      {required String symbol, required int limit}) async {
+    final uri =
+        Uri.parse(AppEndpoints.orderBooksUrl(symbol: symbol, limit: limit));
+    final res = await http.get(uri);
+    return OrderBook.fromJson(res.body);
+  }
+
+  Future<ExchangeSymbol> fetchExchangeInfo(String symbol) async {
+    final uri = Uri.parse(AppEndpoints.exchangeInfoUrl(symbol));
+    final res = await http.get(uri);
+    return ExchangeSymbol.fromMap(jsonDecode(res.body)['symbols'][0]);
+  }
+
+  WebSocketChannel establishConnection(
+      String symbol, String interval, int limit) {
     final channel = WebSocketChannel.connect(
       Uri.parse(AppEndpoints.establishConnectionUrl),
     );
@@ -47,15 +62,15 @@ class Repository {
         },
       ),
     );
-    /*channel.sink.add(
+    channel.sink.add(
       jsonEncode(
         {
           "method": "SUBSCRIBE",
-          "params": ["$symbol@depth@${limit}ms"],
+          "params": ["$symbol@depth"],
           "id": 2
         },
       ),
-    );*/
+    );
     return channel;
   }
 }
