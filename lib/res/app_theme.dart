@@ -10,16 +10,17 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
-      primaryColor: AppColors.lightPrimary,
-      canvasColor: AppColors.lightCanvas,
-      dialogBackgroundColor: AppColors.lightBackground,
-      scaffoldBackgroundColor: AppColors.lightBackground,
+      primaryColor: AppColors.lightPrimaryColor,
+      canvasColor: AppColors.lightCanvasColor,
+      dividerColor: AppColors.lightDividerColor,
+      dialogBackgroundColor: AppColors.lightBackgroundColor,
+      scaffoldBackgroundColor: AppColors.lightBackgroundColor,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Satoshi',
       colorScheme: const ColorScheme.light(
           secondary: AppColors.secondaryColor,
           primary: AppColors.secondaryColor,
-          background: AppColors.lightBackground,
+          background: AppColors.lightBackgroundColor,
           brightness: Brightness.light),
       appBarTheme: AppBarTheme(
           elevation: 0.0,
@@ -28,7 +29,7 @@ class AppTheme {
               .titleLarge!
               .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
           iconTheme: ThemeData.light().iconTheme,
-          color: AppColors.lightPrimary,
+          color: AppColors.lightPrimaryColor,
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarBrightness: Brightness.dark,
             statusBarIconBrightness: Brightness.dark,
@@ -36,16 +37,17 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
-      primaryColor: AppColors.darkPrimary,
-      canvasColor: AppColors.darkCanvas,
-      dialogBackgroundColor: AppColors.darkBackground,
-      scaffoldBackgroundColor: AppColors.darkBackground,
+      primaryColor: AppColors.darkPrimaryColor,
+      canvasColor: AppColors.darkCanvasColor,
+      dividerColor: AppColors.darkDividerColor,
+      dialogBackgroundColor: AppColors.darkBackgroundColor,
+      scaffoldBackgroundColor: AppColors.darkBackgroundColor,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Satoshi',
       colorScheme: const ColorScheme.dark(
           secondary: AppColors.secondaryColor,
           primary: AppColors.secondaryColor,
-          background: AppColors.darkBackground,
+          background: AppColors.darkBackgroundColor,
           brightness: Brightness.dark),
       appBarTheme: AppBarTheme(
           elevation: 0.0,
@@ -54,7 +56,7 @@ class AppTheme {
               .titleLarge!
               .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
           iconTheme: ThemeData.dark().iconTheme,
-          color: AppColors.darkPrimary,
+          color: AppColors.darkPrimaryColor,
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarBrightness: Brightness.light,
             statusBarIconBrightness: Brightness.light,

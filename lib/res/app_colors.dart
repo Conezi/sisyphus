@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color lightPrimary = Color(0xfffcfafa);
-  static const Color lightBackground = Color(0xfffcfafa);
-  static const Color lightCanvas = Color(0xffffffff);
+  static const Color lightPrimaryColor = Color(0xffffffff);
+  static const Color lightBackgroundColor = Color(0xfffcfafa);
+  static const Color lightCanvasColor = Color(0xffF1F1F1);
+  static const Color lightDividerColor = Color(0xffF1F1F1);
 
-  static const Color darkPrimary = Color(0xff17181B);
-  static const Color darkBackground = Color(0xff262932);
-  static const Color darkCanvas = Color(0xff20252B);
+  static const Color darkPrimaryColor = Color(0xff17181B);
+  static const Color darkBackgroundColor = Color(0xff262932);
+  static const Color darkCanvasColor = Color(0xff20252B);
+  static const Color darkDividerColor = Color(0xff262932);
 
   static const Color secondaryColor = Color(0xffDD568D);
+  static const Color green = Color(0xff00C076);
+  static const Color orange = Color(0xffFF6838);
 
   static LinearGradient buttonGradient = const LinearGradient(
       begin: Alignment.centerLeft,
