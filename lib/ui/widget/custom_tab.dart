@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sisyphus/configs/theme_config.dart';
 
 class CustomTab extends StatelessWidget {
   final List<Widget> tabs;
@@ -12,11 +13,14 @@ class CustomTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeConfig.instance.themeMode;
     return Container(
         height: 40,
         margin: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
         decoration: BoxDecoration(
-          color: Theme.of(context).dividerColor,
+          color: Theme.of(context)
+              .shadowColor
+              .withOpacity(themeMode == ThemeMode.dark ? .15 : .05),
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         child: ClipRRect(
@@ -27,7 +31,9 @@ class CustomTab extends StatelessWidget {
                     ? const EdgeInsets.all(2.0)
                     : EdgeInsets.zero,
                 indicator: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: themeMode == ThemeMode.dark
+                        ? Theme.of(context).colorScheme.background
+                        : Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(8.0),
                     border: borderColor != null
                         ? Border.all(

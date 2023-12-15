@@ -57,22 +57,20 @@ class SummaryCard extends StatelessWidget {
                                         radius: 12,
                                         backgroundColor: AppColors.orange,
                                         child: Text(symbol.baseAsset,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 8,
                                                 fontWeight: FontWeight.w700,
-                                                color: Theme.of(context)
-                                                    .primaryColor))),
+                                                color: Colors.white))),
                                     Positioned(
                                         right: 1.5,
                                         child: CircleAvatar(
                                             radius: 12,
                                             backgroundColor: AppColors.green,
                                             child: Text(symbol.quoteAsset,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w700,
-                                                    color: Theme.of(context)
-                                                        .primaryColor))))
+                                                    color: Colors.white))))
                                   ],
                                 ),
                               ),
