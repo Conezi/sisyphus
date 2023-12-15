@@ -36,11 +36,12 @@ class SummaryCard extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () => showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const SymbolsSearchModal();
-                          },
-                        ),
+                            context: context,
+                            builder: (context) => Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12.0)), //this right here
+                                child: const TickersModal())),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

@@ -9,7 +9,7 @@ class ThemeConfig extends BaseViewModel {
   static final _instance = ThemeConfig._();
   static ThemeConfig get instance => _instance;
 
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;

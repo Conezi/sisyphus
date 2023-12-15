@@ -113,7 +113,10 @@ class ButtonsCard extends StatelessWidget {
                 ),
                 child: const Text(
                   'Buy',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
                 ),
               ),
             ),
@@ -131,7 +134,10 @@ class ButtonsCard extends StatelessWidget {
                 ),
                 child: const Text(
                   'Sell',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
                 ),
               ),
             )

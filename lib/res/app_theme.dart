@@ -18,8 +18,8 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Satoshi',
       colorScheme: const ColorScheme.light(
-          secondary: AppColors.secondaryColor,
-          primary: AppColors.secondaryColor,
+          secondary: AppColors.lightSecondaryColor,
+          primary: AppColors.lightSecondaryColor,
           background: AppColors.lightBackgroundColor,
           brightness: Brightness.light),
       checkboxTheme: ThemeData.light().checkboxTheme.copyWith(
@@ -49,8 +49,8 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Satoshi',
       colorScheme: const ColorScheme.dark(
-          secondary: AppColors.secondaryColor,
-          primary: AppColors.secondaryColor,
+          secondary: AppColors.darkSecondaryColor,
+          primary: AppColors.darkSecondaryColor,
           background: AppColors.darkBackgroundColor,
           brightness: Brightness.dark),
       checkboxTheme: ThemeData.dark().checkboxTheme.copyWith(

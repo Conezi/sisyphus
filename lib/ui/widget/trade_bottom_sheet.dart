@@ -235,7 +235,10 @@ class _BuyState extends State<Buy> {
               ),
               child: const Text(
                 'Sell',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
               ),
             ),
           ),
@@ -304,7 +307,10 @@ class _BuyState extends State<Buy> {
               ),
               child: const Text(
                 'Deposit',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
               ),
             ),
           ),
