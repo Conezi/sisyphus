@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:sisyphus/res/app_colors.dart';
 import 'package:sisyphus/res/app_images.dart';
@@ -117,12 +119,18 @@ class _OrderBooksState extends State<OrderBooks> {
                   ),
                 Expanded(
                   child: ListView(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
                     children: [
                       Column(
                         children: List.generate(
-                            orderBook.asks.length,
+                            orderBook.asks.length > currentLimit
+                                ? currentLimit
+                                : orderBook.asks.length,
                             (index) => OrderView(
                                 order: orderBook.asks[index],
+                                cumulativeQuantity: _cumulativeQuantity(
+                                    orderBook.asks.sublist(0, index)),
                                 color: AppColors.orange)),
                       ),
                       if (orderBook.asks.isNotEmpty &&
@@ -156,9 +164,13 @@ class _OrderBooksState extends State<OrderBooks> {
                       ],
                       Column(
                         children: List.generate(
-                            orderBook.bids.length,
+                            orderBook.bids.length > currentLimit
+                                ? currentLimit
+                                : orderBook.bids.length,
                             (index) => OrderView(
                                 order: orderBook.bids[index],
+                                cumulativeQuantity: _cumulativeQuantity(
+                                    orderBook.bids.sublist(0, index)),
                                 color: AppColors.green)),
                       )
                     ],
@@ -201,6 +213,10 @@ class _OrderBooksState extends State<OrderBooks> {
           ],
         ),
       );
+
+  double _cumulativeQuantity(List<List<double>> data) {
+    return data.fold(0, (previousValue, d) => previousValue += d.last);
+  }
 }
 
 class Drawer extends StatelessWidget {
@@ -230,42 +246,82 @@ class Drawer extends StatelessWidget {
 class OrderView extends StatelessWidget {
   final List<double> order;
   final Color color;
-  const OrderView({required this.order, required this.color, super.key});
+  final double cumulativeQuantity;
+  const OrderView(
+      {required this.order,
+      required this.color,
+      required this.cumulativeQuantity,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      height: 28,
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          Expanded(
-            child: Text(
-              '${order.first}',
-              maxLines: 1,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontSize: 12, fontWeight: FontWeight.w500, color: color),
+          Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(math.pi),
+            child: LinearProgressIndicator(
+              value: _calculateProgressValue(cumulativeQuantity, order.last),
+              minHeight: 28,
+              backgroundColor: Colors.transparent,
+              color: color.withOpacity(.15),
             ),
           ),
-          Expanded(
-            child: Text(
-              '${order.last}',
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    '${order.first}',
+                    maxLines: 1,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: color),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '${order.last}',
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '${order.first * order.last}',
+                    maxLines: 1,
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Text(
-              '${order.first * order.last}',
-              maxLines: 1,
-              textAlign: TextAlign.end,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
-          ),
+          )
         ],
       ),
     );
+  }
+
+  double _calculateProgressValue(
+      double cumulativeQuantity, double totalQuantity) {
+    // Ensure totalQuantity is not zero to avoid division by zero
+    if (totalQuantity == 0) {
+      return 0.0;
+    }
+    // Calculate progress value
+    double progressValue = cumulativeQuantity / totalQuantity;
+    // Ensure the progress value is between 0.0 and 1.0
+    return progressValue.clamp(0.0, 1.0);
   }
 }

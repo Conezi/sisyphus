@@ -13,11 +13,11 @@ class ThemeConfig extends BaseViewModel {
 
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
-    _setStatusBar();
+    setStatusBar();
     notifyListeners();
   }
 
-  void _setStatusBar() {
+  void setStatusBar() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness:
           _themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,

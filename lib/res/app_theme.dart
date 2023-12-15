@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -34,9 +36,11 @@ class AppTheme {
               .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
           iconTheme: ThemeData.light().iconTheme,
           color: AppColors.lightPrimaryColor,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness:
+                Platform.isIOS ? Brightness.light : Brightness.dark,
+            statusBarIconBrightness:
+                Platform.isIOS ? Brightness.light : Brightness.dark,
           )));
 
   static ThemeData darkTheme = ThemeData(
@@ -65,8 +69,10 @@ class AppTheme {
               .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
           iconTheme: ThemeData.dark().iconTheme,
           color: AppColors.darkPrimaryColor,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness:
+                Platform.isIOS ? Brightness.dark : Brightness.light,
+            statusBarIconBrightness:
+                Platform.isIOS ? Brightness.dark : Brightness.light,
           )));
 }

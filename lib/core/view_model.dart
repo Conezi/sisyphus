@@ -138,11 +138,34 @@ class ViewModel extends BaseViewModel {
         (message) {
           //log(name: 'Incoming', message);
           final map = jsonDecode(message) as Map<String, dynamic>;
-          if (map['e'] == 'depthUpdate') {
+          if (map['e'] == 'depthUpdate' && map['s'] == ticker.symbol) {
             if (_orderBook == null) return;
             //Update order book
             final orderBook = OrderBook.fromMap(map);
-            _orderBook = orderBook;
+            if (orderBook.asks.isNotEmpty) {
+              List<List<double>> asks = _orderBook!.asks;
+              for (int i = 0; i < orderBook.asks.length; i++) {
+                asks.insert(i, orderBook.asks[i]);
+              }
+              asks.removeWhere((item) => item.last == 0);
+              if (asks.length > _orderBook!.asks.length) {
+                asks.removeAt(0);
+              }
+              //Update order
+              _orderBook = _orderBook!.copyWith(asks: asks);
+            }
+            if (orderBook.bids.isNotEmpty) {
+              List<List<double>> bids = _orderBook!.bids;
+              for (int i = 0; i < orderBook.asks.length; i++) {
+                bids.insert(i, orderBook.asks[i]);
+              }
+              bids.removeWhere((item) => item.last == 0);
+              if (bids.length > _orderBook!.bids.length) {
+                bids.removeAt(0);
+              }
+              //Update order
+              _orderBook = _orderBook!.copyWith(bids: bids);
+            }
           }
           if (map['e'] == 'kline') {
             if (_candles.isEmpty) return;
