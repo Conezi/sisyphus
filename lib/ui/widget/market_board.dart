@@ -114,7 +114,7 @@ class ChartView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 15),
                             _tickerDetail(context,
                                 caption: 'O', value: ticker.openPrice!),
                             _tickerDetail(context,
@@ -150,7 +150,7 @@ class ChartView extends StatelessWidget {
             const WidgetSpan(child: SizedBox(width: 8.0)),
             TextSpan(
                 text: value, style: const TextStyle(color: AppColors.green)),
-            const WidgetSpan(child: SizedBox(width: 8.0)),
+            const WidgetSpan(child: SizedBox(width: 15.0)),
           ]));
 }
 
