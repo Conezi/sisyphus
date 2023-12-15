@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sisyphus/res/app_colors.dart';
 
 class TextEditView extends StatefulWidget {
   final ValueChanged<String>? onChanged;
@@ -30,6 +31,7 @@ class TextEditView extends StatefulWidget {
   final Color? textColor;
   final Iterable<String>? autofillHints;
   final FocusNode? focusNode;
+  final Widget? label;
   const TextEditView(
       {Key? key,
       this.onChanged,
@@ -53,14 +55,15 @@ class TextEditView extends StatefulWidget {
       this.textColor,
       this.prefixIcon,
       this.borderColor,
-      this.filled = true,
+      this.filled = false,
       this.prefixText,
       this.autofillHints,
       this.focusNode,
       this.helperText,
       this.minLines,
       this.maxLength,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      this.label})
       : super(key: key);
 
   @override
@@ -71,7 +74,7 @@ class _TextEditViewState extends State<TextEditView> {
   OutlineInputBorder _border(BuildContext context) => OutlineInputBorder(
       borderSide: BorderSide(
           width: widget.borderWidth,
-          color: widget.borderColor ?? Theme.of(context).shadowColor,
+          color: widget.borderColor ?? Theme.of(context).colorScheme.secondary,
           style: BorderStyle.solid),
       borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)));
 
@@ -99,44 +102,44 @@ class _TextEditViewState extends State<TextEditView> {
         focusNode: widget.focusNode,
         style: TextStyle(color: widget.textColor),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 9.0, horizontal: 12.0),
-          border: _border(context),
-          enabledBorder: _border(context),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide: BorderSide(
-                  width: widget.borderWidth,
-                  color: Theme.of(context).dividerColor,
-                  style: BorderStyle.solid)),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide: BorderSide(
-                  width: widget.borderWidth,
-                  color: Colors.red,
-                  style: BorderStyle.solid)),
-          errorBorder: _border(context),
-          disabledBorder: _border(context),
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: widget.textColor, fontSize: 14),
-          labelText: widget.labelText,
-          labelStyle: TextStyle(color: widget.textColor, fontSize: 14),
-          filled: widget.filled,
-          isDense: widget.isDense,
-          fillColor: widget.fillColor ??
-              Theme.of(context).shadowColor.withOpacity(0.02),
-          helperText: widget.helperText,
-          helperMaxLines: 2,
-          helperStyle: const TextStyle(fontSize: 10),
-          iconColor: widget.iconColor,
-          prefixIconColor: widget.iconColor,
-          suffixIconColor: widget.iconColor,
-          prefixText: widget.prefixText,
-          prefixIcon: widget.prefixIcon,
-          suffixIconConstraints: const BoxConstraints(maxHeight: 40),
-          prefixIconConstraints: const BoxConstraints(maxHeight: 40),
-          suffixIcon: widget.suffixIcon,
-        ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 9.0, horizontal: 12.0),
+            border: _border(context),
+            enabledBorder: _border(context),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                    width: widget.borderWidth,
+                    color: AppColors.green,
+                    style: BorderStyle.solid)),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                    width: widget.borderWidth,
+                    color: Colors.red,
+                    style: BorderStyle.solid)),
+            errorBorder: _border(context),
+            disabledBorder: _border(context),
+            hintText: widget.hintText,
+            hintStyle: TextStyle(color: widget.textColor, fontSize: 14),
+            labelText: widget.labelText,
+            labelStyle: TextStyle(color: widget.textColor, fontSize: 14),
+            filled: widget.filled,
+            isDense: widget.isDense,
+            fillColor: widget.fillColor ??
+                Theme.of(context).shadowColor.withOpacity(0.02),
+            helperText: widget.helperText,
+            helperMaxLines: 2,
+            helperStyle: const TextStyle(fontSize: 10),
+            iconColor: widget.iconColor,
+            prefixIconColor: widget.iconColor,
+            suffixIconColor: widget.iconColor,
+            prefixText: widget.prefixText,
+            prefixIcon: widget.prefixIcon,
+            suffixIconConstraints: const BoxConstraints(maxHeight: 40),
+            prefixIconConstraints: const BoxConstraints(maxHeight: 40),
+            suffixIcon: widget.suffixIcon,
+            label: widget.label),
       ),
     );
   }

@@ -14,6 +14,7 @@ class AppColors {
   static const Color secondaryColor = Color(0xffCFD3D8);
   static const Color green = Color(0xff00C076);
   static const Color orange = Color(0xffFF6838);
+  static const Color blue = Color(0xff2764FF);
 
   static LinearGradient buttonGradient = const LinearGradient(
       begin: Alignment.centerLeft,

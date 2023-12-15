@@ -22,6 +22,10 @@ class AppTheme {
           primary: AppColors.secondaryColor,
           background: AppColors.lightBackgroundColor,
           brightness: Brightness.light),
+      checkboxTheme: ThemeData.light().checkboxTheme.copyWith(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+          ),
       appBarTheme: AppBarTheme(
           elevation: 0.0,
           titleTextStyle: ThemeData.light()
@@ -49,6 +53,10 @@ class AppTheme {
           primary: AppColors.secondaryColor,
           background: AppColors.darkBackgroundColor,
           brightness: Brightness.dark),
+      checkboxTheme: ThemeData.dark().checkboxTheme.copyWith(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+          ),
       appBarTheme: AppBarTheme(
           elevation: 0.0,
           titleTextStyle: ThemeData.dark()

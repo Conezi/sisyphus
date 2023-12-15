@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../res/app_colors.dart';
 import 'custom_tab.dart';
+import 'trade_bottom_sheet.dart';
 
 class TradingBoard extends StatelessWidget {
   const TradingBoard({super.key});
@@ -101,7 +102,7 @@ class ButtonsCard extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _showTradeBottomSheet(context, 0),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.green,
                   shape: RoundedRectangleBorder(
@@ -119,7 +120,7 @@ class ButtonsCard extends StatelessWidget {
             const SizedBox(width: 15.0),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _showTradeBottomSheet(context, 1),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.orange,
                   shape: RoundedRectangleBorder(
@@ -136,5 +137,21 @@ class ButtonsCard extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  static Future<dynamic> _showTradeBottomSheet(
+      BuildContext context, int initialIndex) async {
+    final data = await showModalBottomSheet<dynamic>(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+        backgroundColor: Theme.of(context).colorScheme.background,
+        isScrollControlled: true,
+        builder: (BuildContext bc) {
+          return FractionallySizedBox(
+              heightFactor: 0.7,
+              child: TradeBottomSheet(initialIndex: initialIndex));
+        });
+    return data;
   }
 }

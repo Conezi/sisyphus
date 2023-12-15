@@ -15,11 +15,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ViewModel _viewModel = ViewModel.instance;
-
   @override
   void initState() {
-    _viewModel.fetchSymbols();
+    ViewModel.instance.fetchSymbols();
     super.initState();
   }
 
