@@ -18,4 +18,5 @@ class AppImages {
   static const icDrawer2 = '${_svgBaseUrl}ic_drawer_3.svg';
   static const icDrawer3 = '${_svgBaseUrl}ic_drawer_3.svg';
   static const icRequired = '${_svgBaseUrl}ic_required.svg';
+  static const icDropDown = '${_svgBaseUrl}ic_drop_down.svg';
 }

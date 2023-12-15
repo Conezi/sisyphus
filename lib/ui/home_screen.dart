@@ -48,8 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       insetPadding: const EdgeInsets.only(
                           left: 120.0, top: 24.0, right: 24.0),
                       shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(12.0)), //this right here
+                          borderRadius: BorderRadius.circular(12.0),
+                          side: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 1)), //this right here
                       child: const Menu())),
               splashRadius: 20,
               icon:
@@ -92,7 +94,8 @@ class _MenuState extends State<Menu> {
                     dense: true,
                     selected: _selectedOption == _options[index],
                     selectedColor: Theme.of(context).textTheme.bodyLarge!.color,
-                    selectedTileColor: Theme.of(context).dividerColor,
+                    selectedTileColor:
+                        Theme.of(context).colorScheme.secondary.withOpacity(.5),
                     title: Text(_options[index],
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16)),

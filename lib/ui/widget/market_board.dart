@@ -2,11 +2,13 @@ import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/view_model.dart';
+import '../../res/app_colors.dart';
 import '../../res/app_images.dart';
 import 'custom_tab.dart';
 import 'dropdown_view.dart';
 import 'image_view.dart';
 import 'order_books.dart';
+import 'tickers_modal.dart';
 import 'trading_board.dart';
 
 class MarketBoard extends StatelessWidget {
@@ -62,27 +64,94 @@ class ChartView extends StatelessWidget {
       listenable: ViewModel.instance,
       builder: (BuildContext context, Widget? child) {
         final candles = ViewModel.instance.candles;
+        final ticker = ViewModel.instance.currentTicker;
         return Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 32,
-              child: ListView(
+              child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  children: const [IntervalView()]),
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: IntervalView()),
             ),
             Expanded(
-              child: Candlesticks(
-                  key: Key(
-                      '${ViewModel.instance.currentTicker?.symbol}${ViewModel.instance.currentInterval}'),
-                  candles: candles,
-                  onLoadMoreCandles: ViewModel.instance.fetchMoreCandles),
+              child: Stack(
+                children: [
+                  Candlesticks(
+                      key: Key(
+                          '${ViewModel.instance.currentTicker?.symbol}${ViewModel.instance.currentInterval}'),
+                      candles: candles,
+                      onLoadMoreCandles: ViewModel.instance.fetchMoreCandles),
+                  if (ticker != null) ...[
+                    Container(
+                      height: 16,
+                      margin: const EdgeInsets.only(top: 25.0),
+                      child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          children: [
+                            InkWell(
+                              onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              12.0)), //this right here
+                                      child: const TickersModal())),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const ImageView.svg(AppImages.icDropDown),
+                                  const SizedBox(width: 8),
+                                  Text(ViewModel.instance.pairSymbol,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 10.0,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .color))
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            _tickerDetail(context,
+                                caption: 'O', value: ticker.openPrice!),
+                            _tickerDetail(context,
+                                caption: 'H', value: ticker.highPrice!),
+                            _tickerDetail(context,
+                                caption: 'L', value: ticker.lowPrice!),
+                            _tickerDetail(context,
+                                caption: 'C', value: ticker.priceChange),
+                            _tickerDetail(context,
+                                caption: 'Change:',
+                                value: '${ticker.priceChangePercent}%')
+                          ]),
+                    )
+                  ]
+                ],
+              ),
             ),
           ],
         );
       },
     );
   }
+
+  Widget _tickerDetail(BuildContext context,
+          {required String caption, required String value}) =>
+      Text.rich(TextSpan(
+          text: caption,
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 10,
+              color: Theme.of(context).textTheme.bodySmall!.color),
+          children: [
+            const WidgetSpan(child: SizedBox(width: 8.0)),
+            TextSpan(
+                text: value, style: const TextStyle(color: AppColors.green)),
+            const WidgetSpan(child: SizedBox(width: 8.0)),
+          ]));
 }
 
 class IntervalView extends StatelessWidget {

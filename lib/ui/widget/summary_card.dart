@@ -15,6 +15,7 @@ class SummaryCard extends StatelessWidget {
       listenable: ViewModel.instance,
       builder: (BuildContext context, Widget? child) {
         final ticker = ViewModel.instance.currentTicker;
+        final symbol = ViewModel.instance.symbols;
         if (ticker == null) return const SizedBox.shrink();
         return Container(
             width: double.infinity,
@@ -45,6 +46,37 @@ class SummaryCard extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            if (symbol != null)
+                              SizedBox(
+                                height: 32,
+                                width: 44,
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    CircleAvatar(
+                                        radius: 12,
+                                        backgroundColor: AppColors.orange,
+                                        child: Text(symbol.baseAsset,
+                                            style: TextStyle(
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w700,
+                                                color: Theme.of(context)
+                                                    .primaryColor))),
+                                    Positioned(
+                                        right: 1.5,
+                                        child: CircleAvatar(
+                                            radius: 12,
+                                            backgroundColor: AppColors.green,
+                                            child: Text(symbol.quoteAsset,
+                                                style: TextStyle(
+                                                    fontSize: 8,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Theme.of(context)
+                                                        .primaryColor))))
+                                  ],
+                                ),
+                              ),
+                            const SizedBox(width: 5),
                             Text(ViewModel.instance.pairSymbol,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500,
