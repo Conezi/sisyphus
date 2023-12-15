@@ -1,6 +1,12 @@
 # sisyphus
 
-A Flutter project that consumes the Binance WebSockets API for Candlestick and Orderbooks.
+#### A Flutter project that consumes the Binance WebSockets API for Candlestick and Orderbooks.
+
+### Preview
+---  
+
+![](https://github.com/Conezi/sisyphus/blob/master/demo/demo.gif?raw=true)
+
 
 ## Getting Started
 
