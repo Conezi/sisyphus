@@ -85,7 +85,7 @@ class ChartView extends StatelessWidget {
                   if (ticker != null) ...[
                     Container(
                       height: 16,
-                      margin: const EdgeInsets.only(top: 25.0),
+                      margin: const EdgeInsets.only(top: 35.0),
                       child: ListView(
                           scrollDirection: Axis.horizontal,
                           padding: const EdgeInsets.symmetric(horizontal: 18.0),
